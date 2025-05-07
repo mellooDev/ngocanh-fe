@@ -1,0 +1,354 @@
+<div class="card">
+  <div class="card-header">
+    <p-breadcrumb class="max-w-full d-flex align-items-center" [model]="items">
+      <ng-template pTemplate="item" let-item>
+        <ng-container *ngIf="item.route; else elseBlock">
+          <a [routerLink]="item.route" class="p-menuitem-link">
+            <span
+              [ngClass]="[item.icon ? item.icon : '', 'text-color']"
+              style="
+                font-size: 17px;
+                padding-bottom: 3px;
+                color: black;
+                margin-right: 4px;
+              "
+            ></span>
+            <span class="font-semibold" style="color: black">{{
+              item.label
+            }}</span>
+          </a>
+        </ng-container>
+        <ng-template #elseBlock>
+          <a [href]="item.url">
+            <span class="text-color" style="color: #476bb8">{{
+              item.label
+            }}</span>
+          </a>
+        </ng-template>
+      </ng-template>
+    </p-breadcrumb>
+  </div>
+
+  <div class="card-body pt-0">
+    <div class="mt-4">
+      <div class="search-container mt-4">
+        <div class="d-flex align-items-center">
+          <label for="" class="form-label">Tên đợt</label>
+          <div class="select-box me-2">
+            <select class="form-control custom-width">
+              <option value="" disabled selected>Lựa chọn đợt</option>
+            </select>
+            <i class="bi bi-chevron-down select-arrow"></i>
+          </div>
+        </div>
+      </div>
+
+      <table class="table table-bordered table-hover mt-3 custom-bordered">
+        <thead class="custom-header">
+          <tr>
+            <th style="text-align: center">STT</th>
+            <th>Mã sinh viên</th>
+            <th>Tên sinh viên</th>
+            <th>Mã lớp</th>
+            <th>Tên đợt</th>
+            <th>Tên đề tài</th>
+            <th>Tác vụ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: center">1</td>
+            <td>12551167</td>
+            <td>Nguyễn Thị Lan Anh</td>
+            <td>11021274</td>
+            <td>đợt 1</td>
+            <td>Nguyễn Văn A</td>
+            <td>
+              <div class="d-flex gap-5 align-items-center">
+                <i
+                  class="bi bi-eye-fill"
+                  style="cursor: pointer; font-size: 16px"
+                  ngbTooltip="Xem chi tiết đề tài"
+                ></i>
+                <i
+                  class="bi bi-printer-fill"
+                  style="cursor: pointer; font-size: 16px"
+                  ngbTooltip="Xuất phiếu đánh giá"
+                ></i>
+                <i
+                  class="bi bi-info-square-fill"
+                  style="cursor: pointer; font-size: 16px"
+                  ngbTooltip="Xuất tóm tắt đồ án"
+                  (click)="handleActionChange('printProgress')"
+                ></i>
+                <i
+                  class="bi bi-pencil-square"
+                  style="cursor: pointer; font-size: 16px"
+                  ngbTooltip="Đánh giá, nhận xét"
+                  (click)="handleActionChange('review')"
+                ></i>
+              </div>
+              <!-- <p-dropdown
+                [options]="reviewAction"
+                optionLabel="name"
+                placeholder="Chọn trạng thái"
+                [(ngModel)]="selectedAction"
+                (onChange)="handleActionChange($event)"
+              /> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination-container mt-3">
+      <!-- <ngb-pagination
+        [collectionSize]="filteredData.length"
+        [pageSize]="pageSize"
+        (pageChange)="onPageChange($event)"
+      ></ngb-pagination> -->
+    </div>
+  </div>
+</div>
+
+<ng-template #reviewModal let-modal>
+  <form #myForm="ngForm">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        Nhận xét, đánh giá báo cáo
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <div class="card mb-5" style="padding: 15px 8%">
+        <div class="form-group w-50 mb-3 d-flex align-items-center">
+          <label for="" class="form-label">Tên sinh viên</label>
+          <input
+            type="text"
+            id=""
+            name=""
+            class="form-control"
+            placeholder=""
+            disabled
+          />
+        </div>
+
+        <div class="form-group w-100 mb-3 d-flex align-items-center">
+          <label for="" class="form-label">Tên đề tài</label>
+          <input
+            type="text"
+            id=""
+            name=""
+            class="form-control"
+            placeholder=""
+            disabled
+          />
+        </div>
+
+        <div class="d-flex align-items-center gap-4">
+          <div class="form-group w-50 mb-3 d-flex align-items-center">
+            <label for="" class="form-label">Biểu mẫu</label>
+            <input
+              type="text"
+              id=""
+              name=""
+              class="form-control"
+              placeholder=""
+              disabled
+            />
+          </div>
+
+          <button
+            pButton
+            pRipple
+            class="p-button-primary rounded"
+          >
+            Quy trình hướng dẫn
+          </button>
+        </div>
+      </div>
+
+      <div class="card" style="padding: 10px 5%">
+        <div class="d-flex align-items-center mb-3" style="gap: 35px">
+          <div class="form-group w-25 d-flex align-items-center">
+            <label for="" class="form-label">Tuần</label>
+            <input
+              type="text"
+              id=""
+              name=""
+              class="form-control"
+              placeholder=""
+              disabled
+            />
+          </div>
+
+          <div class="form-group w-25 d-flex align-items-center">
+            <label for="" class="form-label">Từ ngày</label>
+            <input
+              type="text"
+              id=""
+              name=""
+              class="form-control"
+              placeholder=""
+              disabled
+            />
+          </div>
+
+          <div class="form-group w-25 d-flex align-items-center">
+            <label for="" class="form-label">Đến ngày</label>
+            <input
+              type="text"
+              id=""
+              name=""
+              class="form-control"
+              placeholder=""
+              disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group w-100 mb-5 d-flex align-items-center">
+          <label for="" class="form-label">Công việc</label>
+          <input
+            type="text"
+            id=""
+            name=""
+            class="form-control"
+            placeholder=""
+            disabled
+          />
+        </div>
+
+        <div class="form-group w-100 mb-5 d-flex align-items-center">
+          <label for="" class="form-label">Nội dung cần thực hiện</label>
+          <input
+            type="text"
+            id=""
+            name=""
+            class="form-control"
+            placeholder=""
+            disabled
+          />
+        </div>
+
+        <div class="form-group w-100 mb-5 d-flex align-items-center">
+          <label for="" class="form-label">Kết quả</label>
+          <input
+            type="text"
+            id=""
+            name=""
+            class="form-control"
+            placeholder=""
+            disabled
+          />
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="templateContent" class="form-label"
+            >Nhận xét, đánh giá</label
+          >
+          <angular-editor
+            id="templateContent"
+            [config]="editorConfig"
+          ></angular-editor>
+        </div>
+
+        <div class="form-group w-100 mb-3 d-flex align-items-center">
+          <label for="" class="form-label">Điểm báo cáo tuần</label>
+          <input
+            type="text"
+            id=""
+            name=""
+            class="form-control"
+            placeholder=""
+          />
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-primary">Lưu lại</button>
+        </div>
+      </div>
+
+      <table class="table table-bordered table-hover mt-3 custom-bordered">
+        <thead class="custom-header">
+          <tr>
+            <th style="text-align: center">STT</th>
+            <th>Tuần</th>
+            <th>Nội dung thực hiện</th>
+            <th>Đường dẫn Git</th>
+            <th>Đường dẫn báo cáo</th>
+            <th>Nhận xét</th>
+            <th>Điểm báo cáo tuần</th>
+            <th style="text-align: center;">Tác vụ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: center">1</td>
+            <td>Tuần 1</td>
+            <td>bla bla bla</td>
+            <td>
+              <a href="#">Link Git</a>
+            </td>
+            <td>
+              <a href="#">Link báo cáo</a>
+            </td>
+            <td>Tốt</td>
+            <td>10</td>
+            <td style="text-align: center;">
+              <i
+                  class="bi bi-pencil-square"
+                  style="cursor: pointer; font-size: 16px"
+                  ngbTooltip="Chỉnh sửa"
+                ></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="reset"
+        id="kt_modal_update_customer_cancel"
+        class="btn btn-secondary me-3"
+        (click)="modal.dismiss('cancel')"
+      >
+        Đóng
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #printProgress let-modal>
+  <form #myForm="ngForm">
+    <div class="modal-header">
+      <h5 class="modal-title">Xem trước báo cáo</h5>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body" *ngIf="fileUrl">
+      <iframe
+        [src]="safeFileUrl"
+        width="100%"
+        height="600px"
+        style="border: none"
+      ></iframe>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="modal.dismissAll()">
+        Đóng
+      </button>
+      <button class="btn btn-success" (click)="downloadData()">Tải file</button>
+    </div>
+  </form>
+</ng-template>

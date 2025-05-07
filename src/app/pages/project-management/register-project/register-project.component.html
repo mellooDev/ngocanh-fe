@@ -1,0 +1,160 @@
+<p-breadcrumb class="max-w-full d-flex align-items-center" [model]="items">
+  <ng-template pTemplate="item" let-item>
+    <ng-container *ngIf="item.route; else elseBlock">
+      <a [routerLink]="item.route" class="p-menuitem-link">
+        <span
+          [ngClass]="[item.icon ? item.icon : '', 'text-color']"
+          style="
+            font-size: 12px;
+            padding-bottom: 3px;
+            color: black;
+            margin-right: 4px;
+          "
+        ></span>
+        <span class="font-semibold" style="color: black">{{
+          item.label
+        }}</span>
+      </a>
+    </ng-container>
+    <ng-template #elseBlock>
+      <a [href]="item.url">
+        <span class="text-color" style="color: #476bb8">{{
+          item.label
+        }}</span>
+      </a>
+    </ng-template>
+  </ng-template>
+</p-breadcrumb>
+
+<div class="card m-5">
+  <div class="card-body pt-0">
+    <div class="mt-4">
+      <div class="d-flex justify-content-between gap-3 mb-4">
+        <div class="w-50">
+          <label for="" class="form-label">Mã đề tài</label>
+          <input
+            type="text"
+            id=""
+            name=""
+            class="form-control"
+            placeholder=""
+            disabled
+          />
+        </div>
+        <div class="w-50">
+          <label for="" class="form-label">Tên giảng viên</label>
+          <select class="form-select" aria-label="Select example">
+            <option disabled selected>Open this select menu</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between gap-3 mb-4">
+        <div class="w-100">
+          <label for="" class="form-label">Tên đề tài</label>
+          <input
+            type="text"
+            id=""
+            name=""
+            class="form-control"
+            placeholder=""
+          />
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="templateContent" class="form-label">Mô tả đề tài</label>
+        <angular-editor
+          id="templateContent"
+          [config]="editorConfig"
+        ></angular-editor>
+      </div>
+
+      <div class="d-flex align-items-end gap-3 mb-4">
+        <div class="w-50">
+          <label for="" class="form-label">Link mô tả</label>
+          <input
+            type="text"
+            id=""
+            name=""
+            class="form-control"
+            placeholder=""
+          />
+        </div>
+        <div>
+          <p-fileUpload
+            mode="basic"
+            name="demo[]"
+            chooseIcon="pi pi-upload"
+            url="https://www.primefaces.org/cdn/api/upload.php"
+            accept="image/*"
+            maxFileSize="1000000"
+            (onUpload)="onBasicUploadAuto($event)"
+            [auto]="true"
+            chooseLabel="Browse"
+          />
+        </div>
+      </div>
+
+      <div class="form-group w-100" style="margin-bottom: 30px;">
+        <label for="" class="form-label">Phản hồi của người kiểm duyệt</label>
+        <input
+          type="text"
+          id=""
+          name=""
+          class="form-control"
+          placeholder=""
+          disabled
+        />
+      </div>
+
+      <div class="d-flex justify-content-end gap-3">
+        <button class="btn btn-secondary">Thoát</button>
+
+        <button class="btn btn-primary" (click)="onLoadFormConfirm(confimModal)">
+          <span>Đồng ý</span>
+          <!-- <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> -->
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #confimModal let-modal>
+  <form #myForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="modal-header">
+      <h4 class="modal-title mb-0">Xác nhận đề xuất đề tài</h4>
+    </div>
+    <div class="modal-body">
+      <h5>Bạn có chắc chắc muốn đề xuất đề tài? Một khi đã đề xuất thì sẽ không thể sửa</h5>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="reset"
+        id="kt_modal_update_customer_cancel"
+        class="btn btn-light me-3"
+        (click)="modal.dismiss('cancel')"
+      >
+        Hủy
+      </button>
+
+      <button
+        type="submit"
+        id="kt_modal_update_customer_submit"
+        class="btn btn-primary"
+      >
+        <span class="indicator-label"> Xác nhận </span>
+        <span class="indicator-progress">
+          Please wait...
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+          ></span>
+        </span>
+      </button>
+    </div>
+  </form>
+</ng-template>
+<p-toast />

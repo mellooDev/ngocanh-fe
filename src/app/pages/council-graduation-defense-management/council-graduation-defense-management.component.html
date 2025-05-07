@@ -1,0 +1,379 @@
+<p-breadcrumb class="max-w-full d-flex align-items-center" [model]="items">
+  <ng-template pTemplate="item" let-item>
+    <ng-container *ngIf="item.route; else elseBlock">
+      <a [routerLink]="item.route" class="p-menuitem-link">
+        <span
+          [ngClass]="[item.icon ? item.icon : '', 'text-color']"
+          style="
+            font-size: 12px;
+            padding-bottom: 3px;
+            color: black;
+            margin-right: 4px;
+          "
+        ></span>
+        <span class="font-semibold" style="color: black">{{ item.label }}</span>
+      </a>
+    </ng-container>
+    <ng-template #elseBlock>
+      <a [href]="item.url">
+        <span class="text-color" style="color: #476bb8">{{ item.label }}</span>
+      </a>
+    </ng-template>
+  </ng-template>
+</p-breadcrumb>
+
+<div class="card m-5">
+  <div class="card-body pt-0">
+    <div class="mt-4">
+      <div class="search-container mt-4">
+        <div class="d-flex">
+          <div class="select-box me-2 mb-2">
+            <select class="form-control custom-width">
+              <option value="" disabled selected>Đợt đồ án</option>
+            </select>
+            <i class="bi bi-chevron-down select-arrow"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="card defense-1 mb-4">
+        <div class="card-header align-items-center">
+          <h3 class="mb-0">Danh sách sinh viên phản biện 1</h3>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-bordered mt-3 custom-bordered">
+            <thead class="custom-header">
+              <tr>
+                <th style="text-align: center">STT</th>
+                <th>Mã sinh viên</th>
+                <th>Tên sinh viên</th>
+                <th>Mã lớp</th>
+                <th>Giảng viên hướng dẫn</th>
+                <th>Tên đề tài</th>
+                <th>Lịch phản biện</th>
+                <th>Tác vụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center">1</td>
+                <td>12521054</td>
+                <td>Hà Ngọc Ánh</td>
+                <td>125211</td>
+                <td>Vũ Xuân Thắng</td>
+                <td>Đề tài abc</td>
+                <td>30/04/2025</td>
+                <td>
+                  <div class="d-flex gap-5 align-items-center">
+                    <i
+                      class="bi bi-eye-fill"
+                      style="cursor: pointer; font-size: 16px"
+                      ngbTooltip="Xem chi tiết đề tài"
+                    ></i>
+                    <i
+                      class="bi bi-printer-fill"
+                      style="cursor: pointer; font-size: 16px"
+                      ngbTooltip="Xuất phiếu đánh giá"
+                    ></i>
+                    <i
+                      class="bi bi-info-square-fill"
+                      style="cursor: pointer; font-size: 16px"
+                      ngbTooltip="Xuất tóm tắt đồ án"
+                      (click)="handleActionChange('printProgress')"
+                    ></i>
+                    <i
+                      class="bi bi-chat-fill"
+                      style="cursor: pointer; font-size: 16px"
+                      ngbTooltip="Xem chi tiết báo cáo"
+                      (click)="handleActionChange('viewDetailProgress')"
+                    ></i>
+                    <i
+                      class="bi bi-pencil-square"
+                      style="cursor: pointer; font-size: 16px"
+                      ngbTooltip="Phản biện sinh viên"
+                      (click)="handleActionChange('counterArgumentStudent')"
+                    ></i>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pagination-container mt-3">
+            <!-- <ngb-pagination
+              [collectionSize]="filteredData.length"
+              [pageSize]="pageSize"
+              (pageChange)="onPageChange($event)"
+            ></ngb-pagination> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="card defense-2 mb-4">
+        <div class="card-header align-items-center">
+          <h3 class="mb-0">Danh sách sinh viên phản biện 2</h3>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-bordered mt-3 custom-bordered">
+            <thead class="custom-header">
+              <tr>
+                <th style="text-align: center">STT</th>
+                <th>Mã sinh viên</th>
+                <th>Tên sinh viên</th>
+                <th>Mã lớp</th>
+                <th>Giảng viên hướng dẫn</th>
+                <th>Tên đề tài</th>
+                <th>Lịch phản biện</th>
+                <th>Tác vụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center">1</td>
+                <td>12345678</td>
+                <td>Nguyễn Việt Anh</td>
+                <td>125211</td>
+                <td>Vũ Xuân Thắng</td>
+                <td>Đề tài abc</td>
+                <td>30/04/2025</td>
+                <td>
+                  <div class="d-flex gap-5 align-items-center">
+                    <i
+                      class="bi bi-eye-fill"
+                      style="cursor: pointer; font-size: 16px"
+                      ngbTooltip="Xem chi tiết đề tài"
+                    ></i>
+                    <i
+                      class="bi bi-printer-fill"
+                      style="cursor: pointer; font-size: 16px"
+                      ngbTooltip="Xuất phiếu đánh giá"
+                    ></i>
+                    <i
+                      class="bi bi-info-square-fill"
+                      style="cursor: pointer; font-size: 16px"
+                      ngbTooltip="Xuất tóm tắt đồ án"
+                      (click)="handleActionChange('printProgress')"
+                    ></i>
+                    <i
+                      class="bi bi-chat-fill"
+                      style="cursor: pointer; font-size: 16px"
+                      ngbTooltip="Xem chi tiết báo cáo"
+                      (click)="handleActionChange('viewDetailProgress')"
+                    ></i>
+                    <i
+                      class="bi bi-pencil-square"
+                      style="cursor: pointer; font-size: 16px"
+                      ngbTooltip="Phản biện sinh viên"
+                      (click)="handleActionChange('counterArgumentStudent')"
+                    ></i>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pagination-container mt-3">
+            <!-- <ngb-pagination
+              [collectionSize]="filteredData.length"
+              [pageSize]="pageSize"
+              (pageChange)="onPageChange($event)"
+            ></ngb-pagination> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="card  mb-4">
+        <div class="card-header align-items-center">
+          <h3 class="mb-0">Danh sách hội đồng</h3>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover table-bordered mt-3 custom-bordered">
+            <thead class="custom-header">
+              <tr>
+                <th style="text-align: center">STT</th>
+                <th>Tên hội đồng</th>
+                <th>Nhiệm vụ</th>
+                <th>Phòng</th>
+                <th>Thời gian</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center">1</td>
+                <td>Hội đồng 1</td>
+                <td>
+                  <span class="badge badge-success">Ủy viên</span>
+                </td>
+                <td>DH308</td>
+                <td>29/04/2025</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pagination-container mt-3">
+            <!-- <ngb-pagination
+              [collectionSize]="filteredData.length"
+              [pageSize]="pageSize"
+              (pageChange)="onPageChange($event)"
+            ></ngb-pagination> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #counterArgumentStudent let-modal>
+  <form #myForm="ngForm">
+    <div class="modal-header">
+      <div class="modal-title">
+        <h4>Phản biện sinh viên</h4>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="card mb-5" style="padding: 15px 8%">
+        <div class="form-group w-50 mb-3 d-flex align-items-center">
+          <label for="" class="form-label">Tên sinh viên</label>
+          <input
+            type="text"
+            id=""
+            name=""
+            class="form-control"
+            placeholder=""
+            disabled
+          />
+        </div>
+
+        <div class="form-group w-100 mb-3 d-flex align-items-center">
+          <label for="" class="form-label">Tên đề tài</label>
+          <input
+            type="text"
+            id=""
+            name=""
+            class="form-control"
+            placeholder=""
+            disabled
+          />
+        </div>
+
+        <div class="d-flex align-items-center gap-4">
+          <div class="form-group w-50 mb-3 d-flex align-items-center">
+            <label for="" class="form-label">Link báo cáo cuối</label>
+            <input
+              type="text"
+              id=""
+              name=""
+              class="form-control"
+              placeholder=""
+              disabled
+            />
+          </div>
+
+          <button
+            pButton
+            pRipple
+            class="p-button-primary rounded mb-3"
+          >
+            Quy trình hướng dẫn
+          </button>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header align-items-center">
+          <h5 class="mb-0">Tiêu chí phản biện</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered mt-3 custom-bordered">
+            <thead class="custom-header">
+              <tr>
+                <th>Tiêu chí</th>
+                <th>Điểm tối đa</th>
+                <th>Điểm chấm thực tế</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>tiêu chí bla blabla bla</td>
+                <td>9</td>
+                <td>10</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header align-items-center">
+          <h5 class="mb-0">Câu hỏi phản biện</h5>
+        </div>
+        <div class="card-body" style="padding: 10px 8%">
+          <div class="form-group mb-5">
+            <label for="" class="form-label">Câu hỏi phản biện</label>
+            <angular-editor
+              id="templateContent"
+              [config]="editorConfig"
+            ></angular-editor>
+          </div>
+
+          <div class="d-flex align-items-center gap-5">
+            <div style="margin-right: 90px">
+              <label for="">Được phép bảo vệ</label>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+              <p-radioButton
+                name="defense"
+                value="approve"
+                inputId="approve"
+                [(ngModel)]="defenseApproveSelect"
+              />
+
+              <label for="approve" class="ml-2">Được phép bảo vệ</label>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+              <p-radioButton
+                name="defense"
+                value="reject"
+                inputId="reject"
+                [(ngModel)]="defenseApproveSelect"
+              />
+
+              <label for="reject" class="ml-5">Không cho phép bảo vệ</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="reset"
+        id="kt_modal_update_customer_cancel"
+        class="btn btn-secondary me-3"
+        (click)="modal.dismiss('cancel')"
+      >
+        Thoát
+      </button>
+
+      <button
+        type="submit"
+        id="kt_modal_update_customer_submit"
+        class="btn btn-primary"
+      >
+        <span class="indicator-label"> Đồng ý </span>
+        <span class="indicator-progress">
+          Please wait...
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+          ></span>
+        </span>
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<p-toast />

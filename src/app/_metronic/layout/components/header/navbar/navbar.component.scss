@@ -1,0 +1,23 @@
+::ng-deep .ki-notification-status {
+  color: white;
+}
+
+::ng-deep .ki-messages {
+  color: white;
+}
+
+// ::ng-deep .ki-notification-status:hover {
+//   color: #99A1B7;
+// }
+
+::ng-deep .btn-active-light:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+
+  ::ng-deep .ki-notification-status {
+    color: #99A1B7;
+  }
+
+  ::ng-deep .ki-messages {
+    color: #99A1B7;
+  }
+}

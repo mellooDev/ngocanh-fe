@@ -1,0 +1,753 @@
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title font-weight-bolder text-dark">Đợt làm đồ án</h3>
+  </div>
+
+  <div class="card-body pt-0">
+    <div class="mt-4">
+      <div class="search-container mt-4">
+        <div class="d-flex">
+          <div class="input-group me-2 mb-2">
+            <input type="text" class="form-control" placeholder="Tên đợt.." />
+            <span class="input-group-text" style="cursor: pointer">
+              <i class="bi bi-search"></i>
+              <!-- Biểu tượng kính lúp -->
+            </span>
+          </div>
+
+          <div class="select-box me-2 mb-2">
+            <select class="form-control custom-width">
+              <option value="" disabled selected>Năm học áp dụng</option>
+            </select>
+            <i class="bi bi-chevron-down select-arrow"></i>
+          </div>
+        </div>
+        <div class="mb-2">
+          <button
+            class="btn btn-primary"
+            (click)="onLoadModalCreateSession(createOrUpdateModal)"
+          >
+            <i class="bi bi-plus icon-add"></i>
+            Thêm đợt
+          </button>
+        </div>
+      </div>
+
+      <table class="table table-striped mt-3 custom-bordered">
+        <thead class="custom-header">
+          <tr>
+            <th style="text-align: center">STT</th>
+            <th>Mã đợt</th>
+            <th>Tên đợt</th>
+            <th>Ngày bắt đầu làm đồ án</th>
+            <th>Trạng thái</th>
+            <th>Năm học áp dụng</th>
+            <th>Tác vụ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of projectSessionList; let i = index">
+            <td style="text-align: center">
+              {{ i + 1 }}
+            </td>
+            <td>{{ item.project_session_code }}</td>
+            <td>{{ item.project_session_name }}</td>
+            <td>{{ item.start_date | date : "dd/MM/yyyy" }}</td>
+            <td>@switch (item.status) {
+              @case('closed') {
+                <span class="badge badge-warning">Đã kết thúc</span>
+              }
+              @case('open') {
+                <span class="badge badge-success">Đang hoạt động</span>
+              }
+            }
+            </td>
+            <td>{{item.year_name}}</td>
+            <td>
+              <div class="d-flex gap-5 align-items-center">
+                <i
+                  class="bi bi-eye-fill"
+                  style="cursor: pointer; font-size: 16px"
+                  ngbTooltip="Xem chi tiết"
+
+                ></i>
+                <i
+                  class="bi bi-person-fill-add"
+                  style="cursor: pointer; font-size: 16px"
+                  ngbTooltip="Cập nhật sinh viên"
+                  (click)="handleActionChange('updateStudent')"
+                ></i>
+                <i
+                  class="bi bi-people-fill"
+                  style="cursor: pointer; font-size: 16px"
+                  ngbTooltip="Cập nhật giảng viên"
+                ></i>
+                <i
+                  class="bi bi-pencil-square"
+                  style="cursor: pointer; font-size: 16px"
+                  ngbTooltip="Sửa"
+                ></i>
+                <i
+                  class="bi bi-trash-fill"
+                  style="cursor: pointer; font-size: 16px"
+                  ngbTooltip="Xóa"
+                ></i>
+              </div>
+              <!-- <div class="d-flex gap-3 align-items-center">
+                <button
+                  class="button-action btn-download btn btn-sm"
+                  placement="top"
+                  ngbTooltip="Xem chi tiết"
+                >
+                  <i i-bs name="eye-fill"></i>
+                </button>
+
+                <button
+                  class="button-action btn-download btn btn-sm"
+                  placement="top"
+                  ngbTooltip="Chỉnh sửa đề tài"
+                >
+                  <i i-bs name="pencil-square"></i>
+                </button>
+              </div> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination-container mt-3">
+      <ngb-pagination
+        [collectionSize]="recordsTotal"
+        [(page)]="page"
+        [pageSize]="pageSize"
+        (pageChange)="onPageChange($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>
+
+<ng-template #createOrUpdateModal let-modal>
+  <form #myForm="ngForm" (ngSubmit)="onSubmitSession()">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Thông tin đợt đồ án</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <div class="d-flex gap-3 mb-4">
+        <div class="w-50">
+          <label for="" class="form-label">Mã đợt</label>
+          <input
+            type="text"
+            id=""
+            name="sessionCode"
+            [(ngModel)]="sessionCode"
+            class="form-control"
+            placeholder=""
+            disabled
+          />
+        </div>
+        <div class="w-25">
+          <label for="" class="form-label">Năm học áp dụng</label>
+          <select
+            [(ngModel)]="selectedYear"
+            class="form-select"
+            aria-label="Select example"
+            name="academicYear"
+          >
+            <option disabled selected>Open this select menu</option>
+            <option *ngFor="let year of academicYear" [value]="year.id">
+              {{ year.year_name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div
+        class="d-flex align-items-center justify-content-between"
+        style="margin-bottom: 20px"
+      >
+        <div class="form-group w-50" style="margin-bottom: 40px">
+          <label for="" class="form-label">Tên đợt</label>
+          <input
+            type="text"
+            id=""
+            name="sessionName"
+            [(ngModel)]="sessionName"
+            (ngModelChange)="generateCode()"
+            class="form-control"
+            placeholder=""
+          />
+        </div>
+
+        <div class="form-group w-50 ms-4" style="margin-bottom: 40px">
+          <label for="" class="form-label w-100"
+            >Ngày bắt đầu thực hiện đồ án</label
+          >
+          <p-calendar
+            class="calendar-sm"
+            [showButtonBar]="true"
+            [iconDisplay]="'input'"
+            [(ngModel)]="startDate"
+            name="startDate"
+            [showIcon]="true"
+            inputId="icondisplay"
+          />
+        </div>
+      </div>
+
+      <div class="">
+        <h4>Cài đặt</h4>
+        <p-divider />
+      </div>
+      <div class="d-flex align-items-center mb-4">
+        <div class="setting-title me-5 w-50">
+          <span>Đăng ký đề tài</span>
+        </div>
+
+        <p-toggleButton
+          [(ngModel)]="settings.dangKyDeTai"
+          name="dangKyDeTai"
+          onLabel="Cho phép"
+          offLabel="Không cho phép"
+        />
+      </div>
+
+      <div class="d-flex align-items-center mb-4">
+        <div class="setting-title me-5 w-50">
+          <span>Cho phép sinh viên đăng ký giảng viên khác bộ môn </span>
+        </div>
+
+        <p-toggleButton
+          [(ngModel)]="settings.dangKyKhacBoMon"
+          name="dangKyGBKhacBM"
+          onLabel="Cho phép"
+          offLabel="Không cho phép"
+        />
+      </div>
+
+      <div class="d-flex align-items-center mb-4">
+        <div class="setting-title me-5 w-50">
+          <span>Cho phép sinh viên báo cáo khác tuần hiện tại </span>
+        </div>
+
+        <p-toggleButton
+          [(ngModel)]="settings.baoCaoKhacTuan"
+          name="baoCaoKhacHT"
+          onLabel="Cho phép"
+          offLabel="Không cho phép"
+        />
+      </div>
+
+      <div class="d-flex align-items-center mb-4">
+        <div class="setting-title me-5 w-50">
+          <span>Cho phép giảng viên nhận xét báo cáo khác tuần hiện tại</span>
+        </div>
+
+        <p-toggleButton
+          [(ngModel)]="settings.nhanXetKhacTuan"
+          name="nhanXetKhacHT"
+          onLabel="Cho phép"
+          offLabel="Không cho phép"
+        />
+      </div>
+
+      <div class="d-flex align-items-center mb-4">
+        <div class="setting-title me-5 w-50">
+          <span
+            >Cho phép giảng viên sửa đề tài TBM đã duyệt sinh viên đăng ký</span
+          >
+        </div>
+
+        <p-toggleButton
+          [(ngModel)]="settings.suaDeTaiTbm"
+          name="suaDeTai"
+          onLabel="Cho phép"
+          offLabel="Không cho phép"
+        />
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="reset"
+        id="kt_modal_update_customer_cancel"
+        class="btn btn-light me-3"
+        (click)="modal.dismiss('cancel')"
+      >
+        Hủy
+      </button>
+
+      <button
+        type="submit"
+        id="kt_modal_update_customer_submit"
+        class="btn btn-primary"
+      >
+        <span class="indicator-label"> Xác nhận </span>
+        <span class="indicator-progress">
+          Please wait...
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+          ></span>
+        </span>
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #addStudent let-modal>
+  <form #myForm="ngForm">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        Cập nhật sinh viên cho đợt
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <div class="add-lecturer-search-modal">
+        <div class="d-flex gap-3 mb-4">
+          <div class="w-50">
+            <label for="" class="form-label">Khóa học</label>
+            <input
+              type="text"
+              id=""
+              name=""
+              class="form-control"
+              placeholder=""
+              disabled
+            />
+          </div>
+          <div class="w-50">
+            <label for="" class="form-label">Tên bộ môn</label>
+            <input
+              type="text"
+              id=""
+              name=""
+              class="form-control"
+              placeholder=""
+            />
+          </div>
+        </div>
+
+        <div class="d-flex gap-3 mb-4">
+          <div class="w-50">
+            <label for="" class="form-label">Mã lớp</label>
+            <input
+              type="text"
+              id=""
+              name=""
+              class="form-control"
+              placeholder=""
+              disabled
+            />
+          </div>
+          <div class="w-50">
+            <label for="" class="form-label">Chuyên ngành</label>
+            <input
+              type="text"
+              id=""
+              name=""
+              class="form-control"
+              placeholder=""
+            />
+          </div>
+        </div>
+      </div>
+      <p-divider />
+
+      <!-- table -->
+      <div class="add-student-content">
+        <div class="d-flex gap-3 justify-content-between align-items-start">
+          <div style="width: 47%">
+            <button
+              class="p-button-primary rounded"
+              pButton
+              pRipple
+              label="Thêm tất cả các sinh viên vào đợt"
+            ></button>
+          </div>
+
+          <div style="width: 47%">
+            <button
+              class="p-button-primary rounded shadow-2"
+              pButton
+              pRipple
+              label="Xóa tất cả các sinh viên khỏi đợt"
+            ></button>
+          </div>
+        </div>
+
+        <div class="d-flex gap-3 justify-content-between align-items-start">
+          <div class="student-list" style="width: 47%">
+            <div class="card">
+              <div
+                class="d-flex align-items-center justify-content-between px-5 pt-2 table-left"
+              >
+                <h6 class="m-0">Danh sách sinh viên</h6>
+                <p-iconField iconPosition="right">
+                  <input type="text" pInputText placeholder="Tìm kiếm" />
+                  <p-inputIcon styleClass="pi pi-search" />
+                </p-iconField>
+              </div>
+              <p-divider />
+              <div class="">
+                <table
+                  class="table table-bordered mt-3 custom-bordered table-query"
+                >
+                  <thead class="custom-header">
+                    <tr>
+                      <th style="text-align: center"></th>
+                      <th style="text-align: center">STT</th>
+                      <th>Mã sinh viên</th>
+                      <th>Tên sinh viên</th>
+                      <th>Mã lớp</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of studentList; let i = index">
+                      <td style="text-align: center">
+                        <p-checkbox
+                          [ngModel]="selectedStudentIds.has(item.student_code)"
+                          (onChange)="
+                            onCheckboxChange($event.checked, item.student_code)
+                          "
+                          name="row-checked"
+                          [binary]="true"
+                          inputId="binary"
+                        />
+                      </td>
+                      <td style="text-align: center">{{ i + 1 }}</td>
+                      <td>{{ item.student_code }}</td>
+                      <!-- <td></td> -->
+                      <td>{{ item.fullname }}</td>
+                      <td>{{ item.class_code }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-column gap-3 align-self-center">
+            <i
+              class="bi bi-caret-right-fill btn-move-table"
+              (click)="moveToSelected()"
+            ></i>
+            <i
+              class="bi bi-caret-left-fill btn-move-table"
+              (click)="moveToAvailable()"
+            ></i>
+          </div>
+
+          <div class="student-list-selected" style="width: 47%">
+            <div class="card">
+              <div
+                class="d-flex align-items-center justify-content-between px-5 pt-2 table-left"
+              >
+                <h6 class="m-0">Danh sách đã chọn</h6>
+                <p-iconField iconPosition="right">
+                  <input type="text" pInputText placeholder="Tìm kiếm" />
+                  <p-inputIcon styleClass="pi pi-search" />
+                </p-iconField>
+              </div>
+              <p-divider />
+              <div class="">
+                <table
+                  class="table table-bordered mt-3 custom-bordered table-query"
+                >
+                  <thead class="custom-header">
+                    <tr>
+                      <th style="text-align: center"></th>
+                      <th style="text-align: center">STT</th>
+                      <th>Mã sinh viên</th>
+                      <th>Tên sinh viên</th>
+                      <th>Mã lớp</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of selectedStudents; let i = index">
+                      <td style="text-align: center">
+                        <p-checkbox
+                          [ngModel]="selectedStudentIds.has(item.maSinhVien)"
+                          (onChange)="
+                            onCheckboxChange($event.checked, item.maSinhVien)
+                          "
+                          name="row-checked"
+                          [binary]="true"
+                          inputId="binary"
+                        />
+                      </td>
+                      <td style="text-align: center">{{ i + 1 }}</td>
+                      <td>{{ item.maSinhVien }}</td>
+                      <!-- <td></td> -->
+                      <td>{{ item.ten }}</td>
+                      <td>{{ item.lop }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="reset"
+        id="kt_modal_update_customer_cancel"
+        class="btn btn-light me-3"
+        (click)="modal.dismiss('cancel')"
+      >
+        Hủy
+      </button>
+
+      <button
+        type="submit"
+        id="kt_modal_update_customer_submit"
+        class="btn btn-primary"
+      >
+        <span class="indicator-label"> Xác nhận </span>
+        <span class="indicator-progress">
+          Please wait...
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+          ></span>
+        </span>
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #addLecturer let-modal>
+  <form #myForm="ngForm">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        Cập nhật giảng viên cho đợt
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <div class="add-lecturer-search-modal">
+        <div class="d-flex gap-3 mb-4">
+          <div class="w-50">
+            <label for="" class="form-label">Tên bộ môn</label>
+            <input
+              type="text"
+              id=""
+              name=""
+              class="form-control"
+              placeholder=""
+            />
+          </div>
+          <div class="w-50">
+            <label for="" class="form-label">Chức vụ quản lý</label>
+            <input
+              type="text"
+              id=""
+              name=""
+              class="form-control"
+              placeholder=""
+            />
+          </div>
+        </div>
+      </div>
+      <p-divider />
+
+      <!-- table -->
+      <div class="add-lecturer-content">
+        <div class="d-flex gap-3 justify-content-between align-items-start">
+          <div style="width: 47%">
+            <button
+              class="p-button-primary rounded"
+              pButton
+              pRipple
+              label="Thêm tất cả các giảng viên vào đợt"
+            ></button>
+          </div>
+
+          <div style="width: 47%">
+            <button
+              class="p-button-primary rounded"
+              pButton
+              pRipple
+              label="Xóa tất cả các giảng viên khỏi đợt"
+            ></button>
+          </div>
+        </div>
+
+        <div class="d-flex gap-3 justify-content-between align-items-start">
+          <div class="student-list" style="width: 47%">
+            <div class="card">
+              <div
+                class="d-flex align-items-center justify-content-between px-5 pt-2 table-left"
+              >
+                <h6 class="m-0">Danh sách giảng viên</h6>
+                <p-iconField iconPosition="right">
+                  <input type="text" pInputText placeholder="Tìm kiếm" />
+                  <p-inputIcon styleClass="pi pi-search" />
+                </p-iconField>
+              </div>
+              <p-divider />
+              <div class="">
+                <table
+                  class="table table-bordered mt-3 custom-bordered table-query"
+                >
+                  <thead class="custom-header">
+                    <tr>
+                      <th style="text-align: center"></th>
+                      <th style="text-align: center">STT</th>
+                      <th>Mã giảng viên</th>
+                      <th>Tên giảng viên</th>
+                      <th>Số lượng sinh viên hướng dẫn</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of students; let i = index">
+                      <td style="text-align: center">
+                        <p-checkbox
+                          [ngModel]="selectedStudentIds.has(item.maSinhVien)"
+                          (onChange)="
+                            onCheckboxChange($event.checked, item.maSinhVien)
+                          "
+                          name="row-checked"
+                          [binary]="true"
+                          inputId="binary"
+                        />
+                      </td>
+                      <td style="text-align: center">{{ i + 1 }}</td>
+                      <td>{{ item.maSinhVien }}</td>
+                      <!-- <td></td> -->
+                      <td>{{ item.ten }}</td>
+                      <td>{{ item.lop }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-column gap-3 align-self-center">
+            <i
+              class="bi bi-caret-right-fill btn-move-table"
+              (click)="moveToSelected()"
+            ></i>
+            <i
+              class="bi bi-caret-left-fill btn-move-table"
+              (click)="moveToAvailable()"
+            ></i>
+          </div>
+
+          <div class="student-list-selected" style="width: 47%">
+            <div class="card">
+              <div
+                class="d-flex align-items-center justify-content-between px-5 pt-2 table-left"
+              >
+                <h6 class="m-0">Danh sách đã chọn</h6>
+                <p-iconField iconPosition="right">
+                  <input type="text" pInputText placeholder="Tìm kiếm" />
+                  <p-inputIcon styleClass="pi pi-search" />
+                </p-iconField>
+              </div>
+              <p-divider />
+              <div class="">
+                <table
+                  class="table table-bordered mt-3 custom-bordered table-query"
+                >
+                  <thead class="custom-header">
+                    <tr>
+                      <th style="text-align: center"></th>
+                      <th style="text-align: center">STT</th>
+                      <th>Mã giảng viên</th>
+                      <th>Tên giảng viên</th>
+                      <th>Số lượng sinh viên hướng dẫn</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of selectedStudents; let i = index">
+                      <td style="text-align: center">
+                        <p-checkbox
+                          [ngModel]="selectedStudentIds.has(item.maSinhVien)"
+                          (onChange)="
+                            onCheckboxChange($event.checked, item.maSinhVien)
+                          "
+                          name="row-checked"
+                          [binary]="true"
+                          inputId="binary"
+                        />
+                      </td>
+                      <td style="text-align: center">{{ i + 1 }}</td>
+                      <td>{{ item.maSinhVien }}</td>
+                      <!-- <td></td> -->
+                      <td>{{ item.ten }}</td>
+                      <td>{{ item.lop }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="reset"
+        id="kt_modal_update_customer_cancel"
+        class="btn btn-light me-3"
+        (click)="modal.dismiss('cancel')"
+      >
+        Hủy
+      </button>
+
+      <button
+        type="submit"
+        id="kt_modal_update_customer_submit"
+        class="btn btn-primary"
+      >
+        <span class="indicator-label"> Xác nhận </span>
+        <span class="indicator-progress">
+          Please wait...
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+          ></span>
+        </span>
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #viewDetailTemplate let-modal>
+  <h3>Xem chi tiết</h3>
+  <p>Thông tin chi tiết của đợt đồ án...</p>
+</ng-template>
+
+<!-- Modal: Sửa -->
+<ng-template #editTemplate let-modal>
+  <h3>Chỉnh sửa</h3>
+  <p>Form chỉnh sửa nội dung...</p>
+</ng-template>
+
+<!-- Modal: Xóa -->
+<ng-template #deleteTemplate let-modal>
+  <h3>Xóa</h3>
+  <p>Bạn có chắc chắn muốn xóa không?</p>
+</ng-template>
+
+<p-toast />
