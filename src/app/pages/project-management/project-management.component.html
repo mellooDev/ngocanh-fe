@@ -66,20 +66,22 @@
             <th>Số điện thoại</th>
             <th>Mô tả</th>
             <th>Số lượng sinh viên đã đăng ký</th>
-            <th style="text-align: center;">Tác vụ</th>
-            <th>Đăng ký đề tài</th>
+            <th style="text-align: center">Tác vụ</th>
+            <th>
+              {{ hasAnyRegisteredProject() ? "Trạng thái" : "Đăng ký đề tài" }}
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td style="text-align: center">1</td>
-            <td>đề tài abc</td>
-            <td>Vũ Xuân T</td>
-            <td>vuxuanthangutehygmail.com</td>
-            <td>0987654321</td>
-            <td>abcabcabacc</td>
-            <td>1/10</td>
-            <td style="text-align: center;">
+          <tr *ngFor="let item of listProject; let i = index">
+            <td style="text-align: center">{{ i + 1 }}</td>
+            <td>{{ item.project_name }}</td>
+            <td>{{ item.lecturer_name }}</td>
+            <td>{{ item.lecturer_email }}</td>
+            <td>{{ item.lecturer_phone }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.lecturer_slot_usage }}</td>
+            <td style="text-align: center">
               <i
                 class="bi bi-eye-fill"
                 style="cursor: pointer; font-size: 16px"
@@ -88,7 +90,23 @@
               ></i>
             </td>
             <td>
-              <button class="btn btn-primary" (click)="handleActionChange('registerProject')">Đăng ký đề tài</button>
+              <ng-container *ngIf="item.student_id === null; else registered">
+                <button
+                  class="btn btn-primary"
+                  (click)="
+                    handleActionChange(
+                      'registerProject',
+                      item.id,
+                      item.project_name
+                    )
+                  "
+                >
+                  Đăng ký đề tài
+                </button>
+              </ng-container>
+              <ng-template #registered>
+                <span class="text-success">Đã đăng ký</span>
+              </ng-template>
             </td>
           </tr>
         </tbody>
@@ -114,7 +132,7 @@
     </div>
     <div class="modal-body">
       <div class="d-flex align-items-center gap-5">
-        <div class="form-group w-50 mb-3 ">
+        <div class="form-group w-50 mb-3">
           <label for="" class="form-label">Mã đề tài</label>
           <input
             type="text"
@@ -125,7 +143,7 @@
             disabled
           />
         </div>
-        <div class="form-group w-50 mb-3 ">
+        <div class="form-group w-50 mb-3">
           <label for="" class="form-label">Tên đề tài</label>
           <input
             type="text"
@@ -155,20 +173,19 @@
       >
         Thoát
       </button>
-
     </div>
   </form>
 </ng-template>
 
 <ng-template #confirmRegister let-modal>
-  <form #myForm="ngForm">
+  <form #myForm="ngForm" (ngSubmit)="registerProject()">
     <div class="modal-header">
       <div class="modal-title">
         <h4>Đăng ký đề tài</h4>
       </div>
     </div>
     <div class="modal-body text-center">
-      <h4>Bạn chắc chắn muốn đăng ký đề tài abc?</h4>
+      <h4>Bạn chắc chắn muốn đăng ký đề tài {{ selectedProjectName }}?</h4>
     </div>
     <div class="modal-footer">
       <button
@@ -184,6 +201,7 @@
         type="submit"
         id="kt_modal_update_customer_submit"
         class="btn btn-primary"
+        [attr.data-kt-indicator]="isLoading ? 'on' : 'off'"
       >
         <span class="indicator-label"> Đăng ký </span>
         <span class="indicator-progress">
@@ -196,3 +214,4 @@
     </div>
   </form>
 </ng-template>
+<p-toast />

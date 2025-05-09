@@ -55,7 +55,7 @@
         </div>
 
         <!-- sinh viên báo cáo -->
-        <div class="menu-item" >
+        <div class="menu-item" *ngIf="role === 'student'">
           <a class="menu-link without-sub" routerLink="/report-results" routerLinkActive="active">
             <span class="menu-icon">
               <app-keenicon name="archive-tick" class="fs-2"></app-keenicon>
@@ -65,7 +65,7 @@
         </div>
 
         <!-- xem giảng viên phản biện và hội đồng -->
-        <div class="menu-item" >
+        <div class="menu-item" *ngIf="role === 'student'">
           <a class="menu-link without-sub" routerLink="/view-council" routerLinkActive="active">
             <span class="menu-icon">
               <app-keenicon name="archive-tick" class="fs-2"></app-keenicon>
@@ -460,7 +460,7 @@
         </a>
       </div> -->
 
-      <div class="menu-item" >
+      <div class="menu-item" *ngIf="role === 'admin'">
         <a class="menu-link without-sub" routerLink="/email-template-management" routerLinkActive="active">
           <span class="menu-icon">
             <app-keenicon name="folder" class="fs-2"></app-keenicon>

@@ -337,7 +337,12 @@ selectedStudentIdsByRound: { [key: string]: Set<string> } = {};
     const roundStudents = this.roundStudentsByRound[roundId] || [];
 
     const toMove = studentList.filter(sv => selectedIds.has(sv.student_code));
+
+
     this.roundStudentsByRound[roundId] = [...roundStudents, ...toMove];
+
+    console.log('to move: ', this.roundStudentsByRound[roundId]);
+
     this.studentListByRound[roundId] = studentList.filter(sv => !selectedIds.has(sv.student_code));
     this.selectedStudentIdsByRound[roundId].clear();
   }
@@ -368,7 +373,7 @@ selectedStudentIdsByRound: { [key: string]: Set<string> } = {};
 
   submitStudents(roundId: string) {
     const roundStudents = this.roundStudentsByRound[roundId] || [];
-    const studentsPayload = roundStudents.map(sv => ({ student_id: sv.id }));
+    const studentsPayload = roundStudents.map(sv => ({ student_id: sv.student_id }));
 
     console.log({
       roundId,

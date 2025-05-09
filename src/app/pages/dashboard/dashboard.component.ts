@@ -142,25 +142,25 @@ export class DashboardComponent implements OnInit {
   navigateToDetailProduct(id: number) {
     this.router.navigate(['products/', id])
   }
-  slide(direction: number): void {
-    const maxOffset = -(this.responseCategories.length - 6) * this.slideWidth;
+  // slide(direction: number): void {
+  //   const maxOffset = -(this.responseCategories.length - 6) * this.slideWidth;
 
-    // Update the offset based on direction
-    this.offset = Math.min(0, Math.max(this.offset + direction * this.slideWidth, maxOffset));
-  }
+  //   // Update the offset based on direction
+  //   this.offset = Math.min(0, Math.max(this.offset + direction * this.slideWidth, maxOffset));
+  // }
 
-  onWheel(event: WheelEvent): void {
-    const direction = event.deltaY > 0 ? 1 : -1; // Determine scroll direction
-    this.slide(direction);
-    event.preventDefault(); // Prevent default scroll behavior
-  }
+  // onWheel(event: WheelEvent): void {
+  //   const direction = event.deltaY > 0 ? 1 : -1; // Determine scroll direction
+  //   this.slide(direction);
+  //   event.preventDefault(); // Prevent default scroll behavior
+  // }
   ngOnInit() {
     this.getListProducts()
     this.getUserByToken()
     this.getListCatalogs()
 
-    this.slideWidth = window.innerWidth / 6;
-  setInterval(() => this.slide(1), 3000); // Slide tự động mỗi 3 giây
+  //   this.slideWidth = window.innerWidth / 6;
+  // setInterval(() => this.slide(1), 3000); // Slide tự động mỗi 3 giây
 
     this.searchService.searchTerm$.subscribe(term => {
       this.searchTerm = term;

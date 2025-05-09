@@ -9,47 +9,47 @@ const Routing: Routes = [
   },
   {
     path: 'project-management',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./project-management/project-management.module').then((m) => m.ProjectManagementModule),
   },
   {
     path: 'academic',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./academic/academic.module').then((m) => m.AcademicModule),
   },
   {
     path: 'system-management',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./system-management/system-management.module').then((m) => m.SystemManagementModule),
   },
   {
     path: 'lecturer-project-management',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./lecturer-project-management/lecturer-project-management.module').then((m) => m.LecturerProjectManagementModule),
   },
   {
     path: 'lecturer-approve-project',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./lecturer-approve-project/lecturer-approve-project.module').then((m) => m.LecturerApproveProjectModule),
   },
   {
     path: 'instruction-management',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./instruction-management/instruction-management.module').then((m) => m.InstructionManagementModule),
   },
   {
     path: 'project-session-management',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./project-session-management/project-session-management.module').then((m) => m.ProjectSessionManagementModule),
   },
   {
     path: 'round-session-management',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./round-session-management/round-session-management.module').then((m) => m.RoundSessionManagementModule),
   },
   {
     path: 'council-defense-management',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./council-defense-management/council-defense-management.module').then((m) => m.CouncilDefenseManagementModule),
   },
   {
@@ -59,22 +59,22 @@ const Routing: Routes = [
   },
   {
     path: 'report-results',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./report-results-management/report-results-management.module').then((m) => m.ReportResultsManagementModule),
   },
   {
     path: 'view-council',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./view-council-management/view-council-management.module').then((m) => m.ViewCouncilManagementModule),
   },
   {
     path: 'review-project-management',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./review-project-management/review-project-management.module').then((m) => m.ReviewProjectManagementModule),
   },
   {
     path: 'product-provider',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./product-provider/product-provider.module').then((m) => m.ProductProviderModule),
   },
   {
