@@ -96,6 +96,11 @@
   width: 15%;
 }
 
+.custom-table tbody tr td:last-child {
+  width: 30%;
+  
+}
+
 .button-action {
   padding: calc(0.575rem + 1px) calc(1.3rem + 1px);
   border-radius: 0.475rem;

@@ -54,13 +54,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td style="text-align: center">1</td>
-            <td>đề tài abc</td>
-            <!-- <td></td> -->
-            <td>mô tả abc</td>
-            <td>Nguyễn Văn A</td>
-            <td>Vũ Xuân T</td>
+          <tr *ngFor="let item of pendingList; let i = index">
+            <td style="text-align: center">{{i+1}}</td>
+            <td>{{item.student_code}}</td>
+            <td>{{item.student_name}}</td>
+            <td>{{item.class_code}}</td>
+            <td>{{item.project_name}}</td>
             <td>
               <span class="badge badge-warning">Đang chờ duyệt</span>
             </td>
@@ -70,7 +69,7 @@
                   class="bi bi-eye-fill"
                   ngbTooltip="Xem chi tiết"
                   style="cursor: pointer; font-size: 16px"
-                  (click)="onLoadFormDetail(viewDetailModal)"
+                  (click)="onLoadFormDetail(viewDetailModal, item)"
                 ></i>
 
                 <i
@@ -100,7 +99,8 @@
   <form #myForm="ngForm">
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">
-        Thông tin đề tài abc của sinh viên abc - Mã sinh viên abc
+        Thông tin đề tài {{ selectedRequest?.project_name }} của sinh viên
+  {{ selectedRequest?.student_name }} - Mã sinh viên {{ selectedRequest?.student_code }}
       </h4>
       <button
         type="button"
@@ -128,6 +128,7 @@
             type="text"
             id=""
             name=""
+            [value]="selectedRequest?.project_name"
             class="form-control"
             placeholder=""
           />
@@ -141,6 +142,7 @@
         <angular-editor
           id="templateContent"
           [config]="editorConfig"
+          [(ngModel)]="description"
         ></angular-editor>
       </div>
 
@@ -197,7 +199,7 @@
   <form #myForm="ngForm" (ngSubmit)="onSubmit($event, myForm)">
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">
-        Thêm mới quy trình hướng dẫn
+        {{confirmStatus === 'accept' ? 'Phê duyệt' : 'Từ chối'}} đề tài
       </h4>
       <button
         type="button"

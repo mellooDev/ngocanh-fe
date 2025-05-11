@@ -73,6 +73,21 @@ const Routing: Routes = [
     loadChildren: () => import('./review-project-management/review-project-management.module').then((m) => m.ReviewProjectManagementModule),
   },
   {
+    path: 'report-form-management',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./report-form-management/report-form-management.module').then((m) => m.ReportFormManagementModule),
+  },
+  {
+    path: 'assign-instructions-management',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./assign-instructions-management/assign-instructions-management.module').then((m) => m.AssignInstructionsManagementModule),
+  },
+  {
+    path: 'assign-argument-management',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./assign-argument-management/assign-argument-management.module').then((m) => m.AssignArgumentManagementModule),
+  },
+  {
     path: 'product-provider',
     canActivate: [AuthGuard],
     loadChildren: () => import('./product-provider/product-provider.module').then((m) => m.ProductProviderModule),

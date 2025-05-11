@@ -11,16 +11,12 @@
             margin-right: 4px;
           "
         ></span>
-        <span class="font-semibold" style="color: black">{{
-          item.label
-        }}</span>
+        <span class="font-semibold" style="color: black">{{ item.label }}</span>
       </a>
     </ng-container>
     <ng-template #elseBlock>
       <a [href]="item.url">
-        <span class="text-color" style="color: #476bb8">{{
-          item.label
-        }}</span>
+        <span class="text-color" style="color: #476bb8">{{ item.label }}</span>
       </a>
     </ng-template>
   </ng-template>
@@ -35,19 +31,23 @@
           <input
             type="text"
             id=""
-            name=""
+            name="projectCode"
             class="form-control"
             placeholder=""
             disabled
+            [(ngModel)]="projectCode"
           />
         </div>
         <div class="w-50">
           <label for="" class="form-label">Tên giảng viên</label>
-          <select class="form-select" aria-label="Select example">
-            <option disabled selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+          <select class="form-select" [(ngModel)]="lecturerId" aria-label="Select example">
+            <option disabled selected value="">-- Chọn giảng viên --</option>
+            <option
+              *ngFor="let lecturer of lecturerList"
+              [value]="lecturer.lecturer_id"
+            >
+              {{ lecturer.lecturer_name }}
+            </option>
           </select>
         </div>
       </div>
@@ -58,9 +58,11 @@
           <input
             type="text"
             id=""
-            name=""
+            name="projectName"
             class="form-control"
             placeholder=""
+            [(ngModel)]="projectName"
+            (ngModelChange)="generateCode()"
           />
         </div>
       </div>
@@ -70,6 +72,7 @@
         <angular-editor
           id="templateContent"
           [config]="editorConfig"
+          [(ngModel)]="description"
         ></angular-editor>
       </div>
 
@@ -99,7 +102,7 @@
         </div>
       </div>
 
-      <div class="form-group w-100" style="margin-bottom: 30px;">
+      <div class="form-group w-100" style="margin-bottom: 30px">
         <label for="" class="form-label">Phản hồi của người kiểm duyệt</label>
         <input
           type="text"
@@ -114,7 +117,10 @@
       <div class="d-flex justify-content-end gap-3">
         <button class="btn btn-secondary">Thoát</button>
 
-        <button class="btn btn-primary" (click)="onLoadFormConfirm(confimModal)">
+        <button
+          class="btn btn-primary"
+          (click)="onLoadFormConfirm(confimModal)"
+        >
           <span>Đồng ý</span>
           <!-- <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> -->
         </button>
@@ -129,7 +135,10 @@
       <h4 class="modal-title mb-0">Xác nhận đề xuất đề tài</h4>
     </div>
     <div class="modal-body">
-      <h5>Bạn có chắc chắc muốn đề xuất đề tài? Một khi đã đề xuất thì sẽ không thể sửa</h5>
+      <h5>
+        Bạn có chắc chắc muốn đề xuất đề tài? Một khi đã đề xuất thì sẽ không
+        thể sửa
+      </h5>
     </div>
     <div class="modal-footer">
       <button
@@ -145,6 +154,7 @@
         type="submit"
         id="kt_modal_update_customer_submit"
         class="btn btn-primary"
+        [attr.data-kt-indicator]="isLoading ? 'on' : 'off'"
       >
         <span class="indicator-label"> Xác nhận </span>
         <span class="indicator-progress">

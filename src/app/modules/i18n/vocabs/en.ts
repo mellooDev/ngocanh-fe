@@ -43,6 +43,11 @@ export const locale = {
       DEPARTMENT_MANAGEMENT: 'Quản lý khoa',
       MAJOR_MANAGEMENT: 'Quản lý chuyên ngành',
       EMAIL_TEMPLATE: 'Quản lý email template',
+
+      REPORT_FORM_MANAGEMENT: 'Quản lý biểu mẫu, báo cáo',
+      ASSIGN_INSTRUCTIONS_MANAGEMENT: 'Phân công hướng dẫn',
+      ASSIGN_ARGUMENT_MANAGEMENT: 'Phân công phản biện',
+
       REGISTER_PRO: 'Trở thành nhà cung cấp',
       DATA_MNGT: 'Quản lý dữ liệu',
       WORKSHEET: 'Truy cập dữ liệu',

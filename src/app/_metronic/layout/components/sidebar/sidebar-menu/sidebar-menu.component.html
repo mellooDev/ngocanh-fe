@@ -133,6 +133,24 @@
           </a>
         </div>
 
+        <div class="menu-item" *ngIf="role === 'dean'">
+          <a class="menu-link without-sub" routerLink="/assign-instructions-management" routerLinkActive="active">
+            <span class="menu-icon">
+              <app-keenicon name="archive-tick" class="fs-2"></app-keenicon>
+            </span>
+            <span class="menu-title" translate="MENU.ASSIGN_INSTRUCTIONS_MANAGEMENT"></span>
+          </a>
+        </div>
+
+        <div class="menu-item" *ngIf="role === 'dean'">
+          <a class="menu-link without-sub" routerLink="/assign-argument-management" routerLinkActive="active">
+            <span class="menu-icon">
+              <app-keenicon name="archive-tick" class="fs-2"></app-keenicon>
+            </span>
+            <span class="menu-title" translate="MENU.ASSIGN_ARGUMENT_MANAGEMENT"></span>
+          </a>
+        </div>
+
         <!-- Quản lý dữ liệu đã mua -->
         <!-- <div class="menu-item">
           <a class="menu-link without-sub" routerLink="/buyed" routerLinkActive="active">
@@ -466,6 +484,15 @@
             <app-keenicon name="folder" class="fs-2"></app-keenicon>
           </span>
           <span class="menu-title" translate="MENU.EMAIL_TEMPLATE"></span>
+        </a>
+      </div>
+
+      <div class="menu-item">
+        <a class="menu-link without-sub" routerLink="/report-form-management" routerLinkActive="active">
+          <span class="menu-icon">
+            <app-keenicon name="folder" class="fs-2"></app-keenicon>
+          </span>
+          <span class="menu-title" translate="MENU.REPORT_FORM_MANAGEMENT"></span>
         </a>
       </div>
 

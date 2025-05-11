@@ -54,12 +54,12 @@ export class CouncilDefenseManagementComponent {
     ]
 
     this.lecturers = [
-      { maGiangVien: '11021274', ten: 'Hoàng Văn Thuận', soLuongHD: 10 },
-      { maGiangVien: '11021275', ten: 'Nguyễn Văn A', soLuongHD: 11 },
+      { maGiangVien: '1221', ten: 'Nguyễn Văn Hậu', soLuongHD: 10 },
+      { maGiangVien: '1277', ten: 'Phạm Minh Chuẩn', soLuongHD: 11 },
     ];
 
     this.students = [
-      { maSinhVien: '11021274', ten: 'Hoàng Văn Thuận', lop: 'KTPM01' },
+      { maSinhVien: '11021274', ten: 'Hà Ngọc Ánh', lop: 'KTPM01' },
       { maSinhVien: '11021275', ten: 'Nguyễn Văn A', lop: 'KTPM02' },
     ];
 
@@ -134,6 +134,36 @@ export class CouncilDefenseManagementComponent {
     setTimeout(() => {
       this.selectedAction = null;
     });
+  }
+
+  onCheckboxChangeLecturer(checked: boolean, maGiangVien: string) {
+    if (checked) {
+      this.selectedLecturerIds.add(maGiangVien);
+    } else {
+      this.selectedLecturerIds.delete(maGiangVien);
+    }
+  }
+
+  moveLecturerToSelected() {
+    const toMove = this.lecturers.filter((gv: any) =>
+      this.selectedLecturerIds.has(gv.maGiangVien)
+    );
+    this.selectedLecturers.push(...toMove);
+    this.lecturers = this.lecturers.filter(
+      (gv: any) => !this.selectedLecturerIds.has(gv.maGiangVien)
+    );
+    this.selectedStudentIds.clear();
+  }
+
+  moveLecturerToAvailable() {
+    const toMove = this.selectedLecturers.filter((gv: any) =>
+      this.selectedLecturerIds.has(gv.maGiangVien)
+    );
+    this.lecturers.push(...toMove);
+    this.selectedLecturers = this.selectedLecturers.filter(
+      (gv: any) => !this.selectedLecturerIds.has(gv.maGiangVien)
+    );
+    this.selectedLecturerIds.clear();
   }
 
   onCheckboxChange(checked: boolean, maSinhVien: string) {

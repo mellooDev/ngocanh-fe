@@ -1,14 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RegisterProjectService {
   private apiUrl = 'http://localhost:8096/api/';
+  private roundIdSubject = new BehaviorSubject<string | null>(null);
+  roundId$ = this.roundIdSubject.asObservable();
+
 
   constructor(private http: HttpClient) {}
+
+  setRoundId(id: string) {
+    localStorage.setItem('currentRoundId', id);
+    this.roundIdSubject.next(id);
+  }
 
   getProjectForStudent(
     studentId: string,
@@ -44,7 +52,6 @@ export class RegisterProjectService {
   }
 
   studentPurposeProject(
-    projectId: string,
     projectName: string,
     description: string,
     projectRoundId: string,
@@ -54,7 +61,6 @@ export class RegisterProjectService {
   ): Observable<any> {
     const url = this.apiUrl + 'register-project/studentPurposeProject';
     const body = {
-      projectId: projectId,
       projectName: projectName,
       description: description,
       projectRoundId: projectRoundId,

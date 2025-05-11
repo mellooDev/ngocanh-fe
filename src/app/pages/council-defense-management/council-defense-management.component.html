@@ -546,12 +546,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let item of students; let i = index">
+                    <tr *ngFor="let item of lecturers; let i = index">
                       <td style="text-align: center">
                         <p-checkbox
-                          [ngModel]="selectedStudentIds.has(item.maSinhVien)"
+                          [ngModel]="selectedLecturerIds.has(item.maGiangVien)"
                           (onChange)="
-                            onCheckboxChange($event.checked, item.maSinhVien)
+                            onCheckboxChangeLecturer($event.checked, item.maGiangVien)
                           "
                           name="row-checked"
                           [binary]="true"
@@ -559,10 +559,10 @@
                         />
                       </td>
                       <td style="text-align: center">{{ i + 1 }}</td>
-                      <td>{{ item.maSinhVien }}</td>
+                      <td>{{ item.maGiangVien }}</td>
                       <!-- <td></td> -->
                       <td>{{ item.ten }}</td>
-                      <td>{{ item.lop }}</td>
+                      <td>{{ item.soLuongHD }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -573,11 +573,11 @@
           <div class="d-flex flex-column gap-3 align-self-center">
             <i
               class="bi bi-caret-right-fill btn-move-table"
-              (click)="moveToSelected()"
+              (click)="moveLecturerToSelected()"
             ></i>
             <i
               class="bi bi-caret-left-fill btn-move-table"
-              (click)="moveToAvailable()"
+              (click)="moveLecturerToAvailable()"
             ></i>
           </div>
 
@@ -595,7 +595,7 @@
               <p-divider />
               <div class="">
                 <table
-                  class="table table-bordered mt-3 custom-bordered table-query"
+                  class="table custom-table table-bordered mt-3 custom-bordered table-query"
                 >
                   <thead class="custom-header">
                     <tr>
@@ -604,15 +604,16 @@
                       <th>Mã giảng viên</th>
                       <th>Tên giảng viên</th>
                       <th>Số lượng sinh viên hướng dẫn</th>
+                      <th>Nhiệm vụ</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let item of selectedStudents; let i = index">
+                    <tr *ngFor="let item of selectedLecturers; let i = index">
                       <td style="text-align: center">
                         <p-checkbox
-                          [ngModel]="selectedStudentIds.has(item.maSinhVien)"
+                          [ngModel]="selectedLecturerIds.has(item.maGiangVien)"
                           (onChange)="
-                            onCheckboxChange($event.checked, item.maSinhVien)
+                            onCheckboxChangeLecturer($event.checked, item.maGiangVien)
                           "
                           name="row-checked"
                           [binary]="true"
@@ -620,10 +621,20 @@
                         />
                       </td>
                       <td style="text-align: center">{{ i + 1 }}</td>
-                      <td>{{ item.maSinhVien }}</td>
+                      <td>{{ item.maGiangVien }}</td>
                       <!-- <td></td> -->
                       <td>{{ item.ten }}</td>
-                      <td>{{ item.lop }}</td>
+                      <td>{{ item.soLuongHD }}</td>
+                      <td>
+                        <select class="form-select" aria-label="Select example">
+                          <option disabled selected value="">
+                            -- Chọn nhiệm vụ --
+                          </option>
+                          <option>Chủ tích hội đồng</option>
+                          <option>Ủy viên</option>
+                          <option>Thư ký</option>
+                        </select>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -692,13 +703,13 @@
         <tbody>
           <tr>
             <td style="text-align: center">1</td>
-            <td>11021274</td>
+            <td>12521054</td>
+            <td>Hà Ngọc Ánh</td>
             <td>125211</td>
-            <td>Hoàng Văn Thuận</td>
-            <td>Đề tài A</td>
-            <td>Vũ Xuân T</td>
-            <td>Vũ Xuân T</td>
-            <td>Vũ Xuân T</td>
+            <td>Xây dựng hệ thống abc</td>
+            <td>Vũ Xuân Thắng</td>
+            <td>Nguyễn Hữu Đông</td>
+            <td>Nguyễn Hoàng Điệp</td>
             <td>
               <p-dropdown
                 [options]="studentStatus"

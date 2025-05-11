@@ -103,13 +103,15 @@ export class ProjectManagementComponent implements OnInit {
           this.studentId = res.student_id;
           console.log('studentId: ', this.studentId);
 
-          this.registerProjectService.searchStudentRound(this.studentId).subscribe((res) => {
-            this.roundId = res.data[0].round_id;
-            console.log('roundId: ', this.roundId);
-
-            // Chỉ gọi khi đã có đủ
-            this.onLoadList();
-          });
+          this.registerProjectService
+            .searchStudentRound(this.studentId)
+            .subscribe((res) => {
+              this.roundId = res.data[0].round_id;
+              console.log('roundId: ', this.roundId);
+              this.registerProjectService.setRoundId(this.roundId);
+              // Chỉ gọi khi đã có đủ
+              this.onLoadList();
+            });
         }
         this.cdr.detectChanges();
       },
@@ -120,20 +122,36 @@ export class ProjectManagementComponent implements OnInit {
   }
 
   onLoadList() {
-    this.registerProjectService.getProjectForStudent(this.studentId, this.roundId, this.page, this.pageSize).subscribe((res) => {
-      this.listProject = res.data;
-    })
+    this.registerProjectService
+      .getProjectForStudent(
+        this.studentId,
+        this.roundId,
+        this.page,
+        this.pageSize
+      )
+      .subscribe((res) => {
+        this.listProject = res.data;
+      });
   }
 
-  showNotification(severity: string, summary: string, detail: string, lifetime: number) {
-    this.messageService.add({ severity: severity, summary: summary, detail: detail, life: lifetime })
+  showNotification(
+    severity: string,
+    summary: string,
+    detail: string,
+    lifetime: number
+  ) {
+    this.messageService.add({
+      severity: severity,
+      summary: summary,
+      detail: detail,
+      life: lifetime,
+    });
   }
 
   // component.ts
-hasAnyRegisteredProject(): boolean {
-  return this.listProject?.some((p: any) => p.student_id !== null);
-}
-
+  hasAnyRegisteredProject(): boolean {
+    return this.listProject?.some((p: any) => p.student_id !== null);
+  }
 
   onLoadFormRegister() {
     this.router.navigate(['/project-management/register-project']);
@@ -142,7 +160,11 @@ hasAnyRegisteredProject(): boolean {
   @ViewChild('viewDetailProject') viewDetailProject!: TemplateRef<any>;
   @ViewChild('confirmRegister') confirmRegister!: TemplateRef<any>;
 
-  handleActionChange(code: any, projectId?: string, projectName?: string): void {
+  handleActionChange(
+    code: any,
+    projectId?: string,
+    projectName?: string
+  ): void {
     switch (code) {
       case 'viewDetail':
         this.modalService.open(this.viewDetailProject, {
@@ -166,18 +188,23 @@ hasAnyRegisteredProject(): boolean {
   }
 
   registerProject() {
-
     this.isLoading = true;
     console.log(this.selectedProjectId, this.studentId);
 
     setTimeout(() => {
-      this.registerProjectService.studentRegisProject(this.selectedProjectId, this.studentId).subscribe((res) => {
-        this.isLoading = false;
-        if(res) {
-          this.showNotification('success', 'Thông báo', 'Đăng ký đề tài thành công', 3000);
-        }
-      })
+      this.registerProjectService
+        .studentRegisProject(this.selectedProjectId, this.studentId)
+        .subscribe((res) => {
+          this.isLoading = false;
+          if (res) {
+            this.showNotification(
+              'success',
+              'Thông báo',
+              'Đăng ký đề tài thành công',
+              3000
+            );
+          }
+        });
     }, 3000);
-
   }
 }
