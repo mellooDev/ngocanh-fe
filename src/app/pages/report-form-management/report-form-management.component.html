@@ -1,0 +1,102 @@
+<p-breadcrumb class="max-w-full d-flex align-items-center" [model]="items">
+  <ng-template pTemplate="item" let-item>
+    <ng-container *ngIf="item.route; else elseBlock">
+      <a [routerLink]="item.route" class="p-menuitem-link">
+        <span
+          [ngClass]="[item.icon ? item.icon : '', 'text-color']"
+          style="
+            font-size: 12px;
+            padding-bottom: 3px;
+            color: black;
+            margin-right: 4px;
+          "
+        ></span>
+        <span class="font-semibold" style="color: black">{{ item.label }}</span>
+      </a>
+    </ng-container>
+    <ng-template #elseBlock>
+      <a [href]="item.url">
+        <span class="text-color" style="color: #476bb8">{{ item.label }}</span>
+      </a>
+    </ng-template>
+  </ng-template>
+</p-breadcrumb>
+
+<div class="card m-5">
+  <div class="card-body pt-0">
+    <div class="mt-4">
+      <div class="search-container mt-4">
+        <div class="d-flex">
+          <div class="input-group me-2 mb-2">
+            <input type="text" class="form-control" placeholder="Tên đề tài" />
+            <span class="input-group-text" style="cursor: pointer">
+              <i class="bi bi-search"></i>
+              <!-- Biểu tượng kính lúp -->
+            </span>
+          </div>
+
+          <div class="select-box me-2 mb-2">
+            <select class="form-control custom-width">
+              <option value="" disabled selected>Giảng viên hướng dẫn</option>
+            </select>
+            <i class="bi bi-chevron-down select-arrow"></i>
+          </div>
+
+          <!-- <div class="select-box me-2 mb-2">
+            <select class="form-control custom-width">
+              <option value="" disabled selected>Năm học áp dụng</option>
+            </select>
+            <i class="bi bi-chevron-down select-arrow"></i>
+          </div> -->
+        </div>
+
+        <button type="button" class="button-add">
+          <i class="bi bi-plus icon-add"></i>
+          Đề xuất đề tài
+        </button>
+      </div>
+
+      <table class="table table-bordered table-hover mt-3 custom-bordered">
+        <thead class="custom-header">
+          <tr>
+            <th style="text-align: center">STT</th>
+            <th>Tên file</th>
+            <th>Ngày tạo</th>
+            <th style="text-align: center">Tác vụ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of fileList; let i = index">
+            <td style="text-align: center">{{ i + 1 }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.created_at }}</td>
+            <td>
+              <i
+                class="bi bi-download"
+                ngbTooltip="Tải về"
+                (click)="downloadFile(item.url, item.name)"
+              ></i>
+
+              <a
+                #hiddenLink
+                [href]="item.url"
+                [download]="item.name"
+                style="display: none"
+              ></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination-container mt-3">
+      <!-- <ngb-pagination
+        [collectionSize]="filteredData.length"
+        [pageSize]="pageSize"
+        (pageChange)="onPageChange($event)"
+      ></ngb-pagination> -->
+    </div>
+  </div>
+</div>
+
+<p-toast />

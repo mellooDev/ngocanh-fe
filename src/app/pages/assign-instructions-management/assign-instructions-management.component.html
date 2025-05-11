@@ -1,0 +1,314 @@
+<p-breadcrumb class="max-w-full d-flex align-items-center" [model]="items">
+  <ng-template pTemplate="item" let-item>
+    <ng-container *ngIf="item.route; else elseBlock">
+      <a [routerLink]="item.route" class="p-menuitem-link">
+        <span
+          [ngClass]="[item.icon ? item.icon : '', 'text-color']"
+          style="
+            font-size: 12px;
+            padding-bottom: 3px;
+            color: black;
+            margin-right: 4px;
+          "
+        ></span>
+        <span class="font-semibold" style="color: black">{{ item.label }}</span>
+      </a>
+    </ng-container>
+    <ng-template #elseBlock>
+      <a [href]="item.url">
+        <span class="text-color" style="color: #476bb8">{{ item.label }}</span>
+      </a>
+    </ng-template>
+  </ng-template>
+</p-breadcrumb>
+
+<div class="card m-5">
+  <div class="card-body pt-0">
+    <div class="mt-4">
+      <div class="search-container mt-4">
+        <div class="d-flex">
+          <div class="select-box me-2 mb-2">
+            <select class="form-control custom-width">
+              <option value="" disabled selected>Tên đợt</option>
+            </select>
+            <i class="bi bi-chevron-down select-arrow"></i>
+          </div>
+
+          <!-- <div class="select-box me-2 mb-2">
+            <select class="form-control custom-width">
+              <option value="" disabled selected>Năm học áp dụng</option>
+            </select>
+            <i class="bi bi-chevron-down select-arrow"></i>
+          </div> -->
+        </div>
+
+        <button
+          type="button"
+          class="button-add"
+          (click)="onLoadListStudent(viewListStudent)"
+        >
+          Danh sách sinh viên đợt
+        </button>
+      </div>
+
+      <table class="table custom-table table-bordered table-hover mt-3 custom-bordered">
+        <thead class="custom-header">
+          <tr>
+            <th style="text-align: center">STT</th>
+            <th>Mã sinh viên</th>
+            <th>Tên sinh viên</th>
+            <th>Mã lớp</th>
+            <th>Chọn giảng viên hướng dẫn</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: center">1</td>
+            <td>12521054</td>
+            <td>Hà Ngọc Ánh</td>
+            <td>125211</td>
+            <td>
+              <select class="form-select" aria-label="Select example">
+                <option disabled selected value="">
+                  -- Chọn giảng viên --
+                </option>
+                <option>
+                  1125 - Vũ Xuân Thắng - 1/10 sinh viên đã đăng ký, Còn 7 đề
+                  tài, có thể phân cho 7 sinh viên
+                </option>
+                <option>
+                  1221 - Nguyễn Hữu Đông - 1/10 sinh viên đã đăng ký, Còn 9 đề
+                  tài, có thể phân cho 9 sinh viên
+                </option>
+                <option>
+                  1268 - Nguyễn Thị Thanh Huệ - 4/8 sinh viên đã đăng ký, Còn 9
+                  đề tài, có thể phân cho 9 sinh viên
+                </option>
+              </select>
+            </td>
+          </tr>
+          <!-- <tr *ngFor="let item of listProject; let i = index">
+            <td style="text-align: center">{{ i + 1 }}</td>
+            <td>{{ item.project_name }}</td>
+            <td>{{ item.lecturer_name }}</td>
+            <td>{{ item.lecturer_email }}</td>
+            <td>{{ item.lecturer_phone }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.lecturer_slot_usage }}</td>
+            <td style="text-align: center">
+              <i
+                class="bi bi-eye-fill"
+                style="cursor: pointer; font-size: 16px"
+                ngbTooltip="Xem chi tiết đề tài"
+                (click)="handleActionChange('viewDetail')"
+              ></i>
+            </td>
+            <td>
+              <ng-container *ngIf="item.student_id === null; else registered">
+                <button
+                  class="btn btn-primary"
+                  (click)="
+                    handleActionChange(
+                      'registerProject',
+                      item.id,
+                      item.project_name
+                    )
+                  "
+                >
+                  Đăng ký đề tài
+                </button>
+              </ng-container>
+              <ng-template #registered>
+                <span class="text-success">Đã đăng ký</span>
+              </ng-template>
+            </td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination-container mt-3">
+      <!-- <ngb-pagination
+        [collectionSize]="filteredData.length"
+        [pageSize]="pageSize"
+        (pageChange)="onPageChange($event)"
+      ></ngb-pagination> -->
+    </div>
+  </div>
+</div>
+
+<ng-template #viewListStudent let-modal>
+  <form #myForm="ngForm">
+    <div class="modal-header">
+      <div class="modal-title">
+        <h4>Danh sách sinh viên</h4>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-header">
+          <h6 class="card-title m-0">Tìm kiếm</h6>
+        </div>
+        <div class="card-body">
+          <div class="d-flex align-items-center gap-5">
+            <div class="form-group w-50 mb-3">
+              <label for="" class="form-label">Mã sinh viên</label>
+              <input
+                type="text"
+                id=""
+                name=""
+                class="form-control"
+                placeholder=""
+              />
+            </div>
+            <div class="form-group w-50 mb-3">
+              <label for="" class="form-label">Tên sinh viên</label>
+              <input
+                type="text"
+                id=""
+                name=""
+                class="form-control"
+                placeholder=""
+              />
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center gap-5">
+            <div class="form-group w-50 mb-3">
+              <label for="" class="form-label">Mã lớp</label>
+              <input
+                type="text"
+                id=""
+                name=""
+                class="form-control"
+                placeholder=""
+              />
+            </div>
+            <div class="form-group w-50 mb-3">
+              <label for="" class="form-label">Tên trạng thái</label>
+              <input
+                type="text"
+                id=""
+                name=""
+                class="form-control"
+                placeholder=""
+              />
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center gap-5">
+            <div class="form-group w-50 mb-3">
+              <label for="" class="form-label">Tên đợt</label>
+              <input
+                type="text"
+                id=""
+                name=""
+                class="form-control"
+                placeholder=""
+              />
+            </div>
+            <div class="form-group w-50 mb-3">
+              <label for="" class="form-label">Tên bộ môn</label>
+              <input
+                type="text"
+                id=""
+                name=""
+                class="form-control"
+                placeholder=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-5">
+        <div class="card-header">
+          <h6 class="card-title m-0">Danh sách sinh viên</h6>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered table-hover mt-3 custom-bordered">
+            <thead class="custom-header">
+              <tr>
+                <th style="text-align: center">STT</th>
+                <th>Mã sinh viên</th>
+                <th>Tên sinh viên</th>
+                <th>Mã lớp</th>
+                <th>Số điện thoại</th>
+                <th>Mã đề tài</th>
+                <th>Tên đề tài</th>
+                <th>Mã giảng viên</th>
+                <th>Tên giảng viên</th>
+                <th>Tác vụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center">1</td>
+                <td>12521054</td>
+                <td>Hà Ngọc Ánh</td>
+                <td>125211</td>
+                <td>0987654321</td>
+                <td>DATNABC</td>
+                <td>Đồ án tốt nghiệp abc</td>
+                <td>1221</td>
+                <td>Vũ Xuân Thắng</td>
+                <td>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="reset"
+        id="kt_modal_update_customer_cancel"
+        class="btn btn-secondary me-3"
+        (click)="modal.dismiss('cancel')"
+      >
+        Thoát
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<!-- <ng-template #confirmRegister let-modal>
+  <form #myForm="ngForm" (ngSubmit)="registerProject()">
+    <div class="modal-header">
+      <div class="modal-title">
+        <h4>Đăng ký đề tài</h4>
+      </div>
+    </div>
+    <div class="modal-body text-center">
+      <h4>Bạn chắc chắn muốn đăng ký đề tài {{ selectedProjectName }}?</h4>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="reset"
+        id="kt_modal_update_customer_cancel"
+        class="btn btn-secondary me-3"
+        (click)="modal.dismiss('cancel')"
+      >
+        Hủy
+      </button>
+
+      <button
+        type="submit"
+        id="kt_modal_update_customer_submit"
+        class="btn btn-primary"
+        [attr.data-kt-indicator]="isLoading ? 'on' : 'off'"
+      >
+        <span class="indicator-label"> Đăng ký </span>
+        <span class="indicator-progress">
+          Please wait...
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+          ></span>
+        </span>
+      </button>
+    </div>
+  </form>
+</ng-template> -->
+<p-toast />
